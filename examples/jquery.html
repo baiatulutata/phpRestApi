@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP RESTful API with jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>PHP RESTful API with jQuery</h1>
+
+<!-- Login Form -->
+<div>
+    <h2>Login</h2>
+    <input type="text" id="login-username" placeholder="Username" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button id="login-btn">Login</button>
+    <p id="login-message"></p>
+</div>
+
+<!-- User List -->
+<div>
+    <h2>Users List</h2>
+    <button id="fetch-users-btn">Fetch Users</button>
+    <ul id="user-list"></ul>
+</div>
+
+<!-- Create User Form -->
+<div>
+    <h2>Create User</h2>
+    <input type="text" id="create-username" placeholder="Username" />
+    <input type="email" id="create-email" placeholder="Email" />
+    <input type="password" id="create-password" placeholder="Password" />
+    <button id="create-user-btn">Create User</button>
+    <p id="create-message"></p>
+</div>
+
+<script>
+    let token = '';
+
+    // Login function
+    $('#login-btn').click(function() {
+        const username = $('#login-username').val();
+        const password = $('#login-password').val();
+
+        $.ajax({
+            url: 'http://your-api-url/login', // Replace with your API URL
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            success: function(response) {
+                if (response.token) {
+                    token = response.token;
+                    $('#login-message').text('Login successful');
+                } else {
+                    $('#login-message').text('Invalid credentials');
+                }
+            },
+            error: function() {
+                $('#login-message').text('Login failed');
+            }
+        });
+    });
+
+    // Fetch users function
+    $('#fetch-users-btn').click(function() {
+        $.ajax({
+            url: 'http://your-api-url/users/list', // Replace with your API URL
+            type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function(response) {
+                let users = '';
+                response.forEach(function(user) {
+                    users += `<li>${user.username}</li>`;
+                });
+                $('#user-list').html(users);
+            },
+            error: function() {
+                alert('Failed to fetch users');
+            }
+        });
+    });
+
+    // Create new user function
+    $('#create-user-btn').click(function() {
+        const username = $('#create-username').val();
+        const email = $('#create-email').val();
+        const password = $('#create-password').val();
+
+        $.ajax({
+            url: 'http://your-api-url/users/create', // Replace with your API URL
+            type: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify({
+                username: username,
+                email: email,
+                password: password
+            }),
+            success: function(response) {
+                $('#create-message').text('User created successfully');
+            },
+            error: function() {
+                $('#create-message').text('Error creating user');
+            }
+        });
+    });
+</script>
+</body>
+</html>
