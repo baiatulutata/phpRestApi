@@ -244,8 +244,5 @@ curl -X POST http://localhost/api.php/users/create \
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
+This project is free to use!
 ---
-
-Let me know if you need any additional information or modifications!
