@@ -244,5 +244,5 @@ curl -X POST http://localhost/api.php/users/create \
 
 ## License
 
-This project is free to use!
+This project is free to use and you don't have to mention me. it's stuff i put together copying from stackoverflow:D!
 ---
